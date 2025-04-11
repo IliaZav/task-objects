@@ -1,26 +1,38 @@
 /*
-  В функцию personUpdate() приходят данные в виде объекта, содержащую некую информацию о человеке.
-  Если этот человек является женщиной (свойство gender содержит значение 'female'), то из этого объекта
-  необходимо удалить свойство age, если оно есть.
-  Если этот человек является мужчиной (свойство gender содержит значение 'male'), следует убедиться,
-  что в этом объекте есть свойство income. Если его нет, необходимо его добавить
-  и присвоить начальное значение 100000.
-  Объект после манипуляций следует вернуть в качестве результата работы функции.
+  Обновление объекта человека в зависимости от пола
 */
 export function personUpdate(data) {
+  const updated = { ...data };
+  if (updated.gender === 'female') {
+    delete updated.age;
+  } else if (updated.gender === 'male' && !('income' in updated)) {
+    updated.income = 100000;
+  }
+  return updated;
 }
 
 /*
-  В функцию objectFieldsList приходят три объекта с различными полями, список которых заранее неизвестен.
-  Верните список названий этих полей в алфавитном порядке в виде массива строк.
+  Сбор и сортировка уникальных ключей из трёх объектов
 */
 export function objectFieldsList(obj1, obj2, obj3) {
+  const keys = new Set([
+    ...Object.keys(obj1),
+    ...Object.keys(obj2),
+    ...Object.keys(obj3)
+  ]);
+  return Array.from(keys).sort();
 }
 
 /*
-  Верните в результате работы функции массив с клонами объекта obj.
-  При этом каждый клон должен дополнительно содержать поле id со своим порядковым номером в массиве.
-  Количество клонов - count.
+  Глубокое клонирование объекта с добавлением id
 */
 export function objectClone(obj, count) {
+  const clones = [];
+  for (let i = 0; i < count; i++) {
+    // Глубокое копирование
+    const clone = JSON.parse(JSON.stringify(obj));
+    clone.id = i; // id начинается с 0
+    clones.push(clone);
+  }
+  return clones;
 }
